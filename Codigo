@@ -1,0 +1,86 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <windows.h>
+//#include <unistd.h> Sleep no linux
+
+struct DadosCarros {
+    char nome[30];
+    int telefone;
+    char placa[6];
+    int tipo;
+    int prioridade;
+    int servicos[7];
+};
+struct DadosCarros Carros[50];
+int index;
+
+int MenuPricipal(){
+    int menu;
+    system("cls");
+    printf("############################################\n");
+    printf("#                  Menu                    #\n");
+    printf("#                                          #\n");
+    printf("#       1 - Cadastrar Carro                #\n");
+    printf("#       2 - Lista de Carros para hoje      #\n");
+    printf("#                                          #\n");
+    printf("############################################\n");
+    scanf("%d",&menu);
+    switch (menu){
+        case 1:
+            CadastrarCarro();
+        break;
+        case 2:
+            ImprimirLista();
+        break;
+        default:
+            printf("Favor Informe 1 ou 2\n");
+            usleep(3);
+            MenuPricipal();
+    }
+}
+
+int CadastrarCarro (){
+    system("cls");
+    Carros[index].prioridade = 0;
+    printf("Informe o nome do modelo do Veiculo\n");
+    fflush(stdin);
+    fgets(Carros[index].nome,100,stdin);
+    fflush(stdin);
+    fgets(Carros[index].nome,100,stdin);
+    printf("Informe a placa do Veiculo\n");
+    fflush(stdin);
+    fgets(Carros[index].placa,100,stdin);
+    printf("Informe o tipo do Veiculos\n1 - Para Hatch \n2 - para Sedan\n");
+    scanf("%d",&Carros[index].tipo);
+    printf("Informe o Telefone do Proprietario do Veiculo\n");
+    scanf("%d",&Carros[index].telefone);
+    ImprimeCarro(index);
+    index++;
+}
+
+int ImprimeCarro(index){
+    system("cls");
+    printf("############################################\n");
+    printf("#Nome:...........%s \n",Carros[index].nome);
+    printf("#Placa:..........%s \n",Carros[index].placa);
+    printf("#Telefone:.......%d \n",Carros[index].telefone);
+    printf("#Prioridade:.....%d \n",Carros[index].prioridade);
+    if(Carros[index].tipo == 1){
+        printf("#Tipo:...........Hatch\n");
+    }else{
+        printf("#Tipo:...........Sedan\n");
+    }
+    printf("############################################\n");
+}
+int ImprimirLista(){
+
+printf("Imprime Lista ");
+
+}
+
+int main(){
+    MenuPricipal();
+
+
+
+}
