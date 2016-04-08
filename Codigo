@@ -16,7 +16,7 @@ int index;
 
 int MenuPricipal(){
     int menu;
-    system("cls");
+    system("cls");// Deu ruim aaqui 
     printf("############################################\n");
     printf("#                  Menu                    #\n");
     printf("#                                          #\n");
