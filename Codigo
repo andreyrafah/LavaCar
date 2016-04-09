@@ -1,30 +1,37 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <windows.h>
+#include <locale.h>//Resolve Problemas de Acentuação
+#include <windows.h>//Sleep no Windows
 //#include <unistd.h> Sleep no linux
+char limpar[3] ="cls";//limpar tela no windows
+//char limpar[5] ="clear"; //Limpar tela no linux
+//char ColorMenuPrincipal[8] = "color 0A";//Troca a cor não deu certo seila pq
 
 struct DadosCarros {
-    char nome[30];
-    int telefone;
-    char placa[6];
-    int tipo;
-    int prioridade;
-    int servicos[7];
+    char    nome[30];
+    int     telefone;
+    char    placa[6];
+    int     tipo;
+    int     prioridade;
+    int     servicos[7];
 };
+
 struct DadosCarros Carros[50];
 int index;
 
 int MenuPricipal(){
     int menu;
-    system("cls");// Deu ruim aaqui 
+    //system(ColorMenuPrincipal);
+    system(limpar);
     printf("############################################\n");
     printf("#                  Menu                    #\n");
     printf("#                                          #\n");
-    printf("#       1 - Cadastrar Carro                #\n");
+    printf("#       1 - Cadastrar Carros               #\n");
     printf("#       2 - Lista de Carros para hoje      #\n");
     printf("#                                          #\n");
     printf("############################################\n");
     scanf("%d",&menu);
+
     switch (menu){
         case 1:
             CadastrarCarro();
@@ -33,38 +40,45 @@ int MenuPricipal(){
             ImprimirLista();
         break;
         default:
-            printf("Favor Informe 1 ou 2\n");
-            usleep(3);
+            system(limpar);
+            printf("Não Jovem!!!!!\nÉ 1 ou 2\n");
+            redirecionamento(5);
             MenuPricipal();
+
     }
 }
 
 int CadastrarCarro (){
-    system("cls");
+    system(limpar);
+
     Carros[index].prioridade = 0;
-    printf("Informe o nome do modelo do Veiculo\n");
+
+    printf("Informe o nome do modelo do Veiculo\n=> ");
     fflush(stdin);
-    fgets(Carros[index].nome,100,stdin);
-    fflush(stdin);
-    fgets(Carros[index].nome,100,stdin);
-    printf("Informe a placa do Veiculo\n");
+    fgets(Carros[index].nome,sizeof(Carros[index].nome),stdin);
+
+    printf("Informe a placa do Veiculo\n=> ");
     fflush(stdin);
     fgets(Carros[index].placa,100,stdin);
-    printf("Informe o tipo do Veiculos\n1 - Para Hatch \n2 - para Sedan\n");
+
+    printf("Informe o tipo do Veiculos\n1 - Para Hatch \n2 - para Sedan\n=> ");
+    fflush(stdin);
     scanf("%d",&Carros[index].tipo);
-    printf("Informe o Telefone do Proprietario do Veiculo\n");
+
+    printf("Informe o Telefone do Proprietario do Veiculo\n=> ");
     scanf("%d",&Carros[index].telefone);
-    ImprimeCarro(index);
+    //>>>>>>>Aqui deve Pegar os Tipos de Serviço e definir a prioridade
     index++;
+    PerguntaNovoCarro();
 }
 
-int ImprimeCarro(index){
-    system("cls");
-    printf("############################################\n");
-    printf("#Nome:...........%s \n",Carros[index].nome);
-    printf("#Placa:..........%s \n",Carros[index].placa);
-    printf("#Telefone:.......%d \n",Carros[index].telefone);
-    printf("#Prioridade:.....%d \n",Carros[index].prioridade);
+int ImprimeCarro(int i){
+
+    printf("#Posição Fila:...%d \n",i);
+    printf("#Nome:...........%s \n",Carros[i].nome);
+    printf("#Placa:..........%s \n",Carros[i].placa);
+    printf("#Telefone:.......%d \n",Carros[i].telefone);
+    printf("#Prioridade:.....%d \n",Carros[i].prioridade);
     if(Carros[index].tipo == 1){
         printf("#Tipo:...........Hatch\n");
     }else{
@@ -72,15 +86,76 @@ int ImprimeCarro(index){
     }
     printf("############################################\n");
 }
+
+
 int ImprimirLista(){
 
-printf("Imprime Lista ");
+    int menu,i;
+
+    system(limpar);
+    printf("############################################\n");
+    printf("#            Qual a Ordem?                 #\n");
+    printf("#                                          #\n");
+    printf("#       1 - Crecente                       #\n");
+    printf("#       2 - Decrecente                     #\n");
+    printf("#                                          #\n");
+    printf("############################################\n");
+
+    scanf("%d",&menu);
+
+    switch (menu){
+        case 1:
+            for(i = 0; i <= index;i++ ){
+                ImprimeCarro(i+1);
+            }
+        break;
+        case 2:
+            for(i = index-1; i >= 0;i-- ){
+                ImprimeCarro(i);
+            }
+        break;
+        default:
+            system(limpar);
+            printf("Não Jovem!!!!!\nÉ 1 ou 2\n");
+            redirecionamento(5);
+            ImprimirLista();
+    }
+
+}
+
+int redirecionamento(int Seg){
+    int i;
+
+    for(i = Seg; i > 0;i--){
+        printf("Você sera redirecionado em %d \r",i);
+        Sleep(1000);
+    }
+}
+
+int PerguntaNovoCarro(){
+    int menu;
+    system(limpar);
+
+    printf("Ok Carro Cadastrado!\nGostaria de Cadastrar outro Carro ? (1 - Sim/ 2 - Não)");
+    scanf("%d",&menu);
+    switch (menu){
+        case 1:
+            CadastrarCarro();
+        break;
+        case 2:
+            MenuPricipal();
+        break;
+        default:
+            system(limpar);
+            printf("Não Jovem!!!!!\nÉ 1 ou 2\n");
+            redirecionamento(5);
+            PerguntaNovoCarro();
+
+    }
 
 }
 
 int main(){
+    setlocale(LC_ALL,"");//Para colocar localidade para ajustar os acentos
     MenuPricipal();
-
-
-
 }
