@@ -13,7 +13,9 @@ struct DadosCarros {
     char    placa[6];
     int     tipo;
     int     prioridade;
-    int     servicos[7];
+    int     servicos;
+    int     tipoLavagem;
+    int     aspirador;
 };
 
 struct DadosCarros Carros[50];
@@ -44,8 +46,8 @@ int MenuPricipal(){
             printf("Não Jovem!!!!!\nÉ 1 ou 2\n");
             redirecionamento(5);
             MenuPricipal();
-
     }
+    return;
 }
 
 int CadastrarCarro (){
@@ -61,30 +63,135 @@ int CadastrarCarro (){
     fflush(stdin);
     fgets(Carros[index].placa,100,stdin);
 
-    printf("Informe o tipo do Veiculos\n1 - Para Hatch \n2 - para Sedan\n=> ");
-    fflush(stdin);
-    scanf("%d",&Carros[index].tipo);
+    TipoVeiculo();
 
     printf("Informe o Telefone do Proprietario do Veiculo\n=> ");
     scanf("%d",&Carros[index].telefone);
+
+    PerguntaTipoLavagem();
+
+    PerguntaAspirador();
     //>>>>>>>Aqui deve Pegar os Tipos de Serviço e definir a prioridade
     index++;
     PerguntaNovoCarro();
+    return;
 }
+
+int TipoVeiculo(){
+    int vlr;
+    printf("Informe o tipo do Veiculo \n1 - Carro Hatch \n2 - Carro Sedan\n3 - Moto\n4 - Van\n=> ");
+    fflush(stdin);
+    scanf("%d",&vlr);
+    switch (vlr){
+    case 1:
+        Carros[index].tipo = 1;
+    break;
+    case 2:
+        Carros[index].tipo = 2;
+    break;
+    case 3:
+        Carros[index].tipo = 3;
+    break;
+    case 4:
+        Carros[index].tipo = 4;
+    break;
+    default:
+            system(limpar);
+            printf("Não Jovem!!!!!\nÉ 1 a 4\n");
+            redirecionamento(5);
+            TipoVeiculo();
+    }
+    return;
+}
+
+int PerguntaAspirador(){
+    int vlr;
+    printf("Aspirador ?\n1 - Sim\n2 - Não\n=> ");
+    fflush(stdin);
+    scanf("%d",&vlr);
+    switch (vlr){
+    case 1:
+        Carros[index].aspirador = 1;
+    break;
+    case 2:
+        Carros[index].aspirador = 2;
+    break;
+    default:
+            system(limpar);
+            printf("Não Jovem!!!!!\nÉ 1 ou 2\n");
+            redirecionamento(5);
+            PerguntaAspirador();
+    }
+    return;
+}
+
+int PerguntaTipoLavagem(){
+    int vlr;
+    printf("Qual o Tipo de Lavagem?\n1 - Completa\n2 - Ecologica\n=> ");
+    fflush(stdin);
+    scanf("%d",&vlr);
+    switch (vlr){
+    case 1:
+        Carros[index].tipoLavagem = 1;
+    break;
+    case 2:
+        Carros[index].tipoLavagem = 2;
+    break;
+    default:
+            system(limpar);
+            printf("Não Jovem!!!!!\nÉ 1 ou 2\n");
+            redirecionamento(5);
+            PerguntaTipoLavagem();
+    }
+    return;
+}
+
 
 int ImprimeCarro(int i){
 
-    printf("#Posição Fila:...%d \n",i);
+    //printf("#Posição Fila:...%d \n",i);
     printf("#Nome:...........%s \n",Carros[i].nome);
     printf("#Placa:..........%s \n",Carros[i].placa);
     printf("#Telefone:.......%d \n",Carros[i].telefone);
     printf("#Prioridade:.....%d \n",Carros[i].prioridade);
-    if(Carros[index].tipo == 1){
-        printf("#Tipo:...........Hatch\n");
-    }else{
-        printf("#Tipo:...........Sedan\n");
+    switch (Carros[i].tipo){
+        case 1:
+            printf("#Tipo:...........Hatch\n");
+        break;
+        case 2:
+            printf("#Tipo:...........Sedan\n");
+        break;
+        case 3:
+            printf("#Tipo:............Moto\n");
+        break;
+        case 4:
+            printf("#Tipo:............Van\n");
+        break;
+        default:
+            printf("#Tipo:............Ops Algo Errado\n");
+    }
+    switch (Carros[i].tipoLavagem){
+        case 1:
+            printf("#Lavagem:........Completa\n");
+        break;
+        case 2:
+            printf("#Lavagem:........Ecologica\n");
+        break;
+        default:
+            printf("#Lavagem:........Ops Algo Errado\n");
+    }
+    switch (Carros[i].aspirador){
+        case 1:
+            printf("#Aspirador:......Sim\n");
+        break;
+        case 2:
+            printf("#Aspirador:......Não\n");
+        break;
+        default:
+            printf("#Aspirador:......Ops Algo Errado\n");
     }
     printf("############################################\n");
+    return;
 }
 
 
@@ -105,8 +212,8 @@ int ImprimirLista(){
 
     switch (menu){
         case 1:
-            for(i = 0; i <= index;i++ ){
-                ImprimeCarro(i+1);
+            for(i = 0; i < index;i++ ){
+                ImprimeCarro(i);
             }
         break;
         case 2:
@@ -119,22 +226,27 @@ int ImprimirLista(){
             printf("Não Jovem!!!!!\nÉ 1 ou 2\n");
             redirecionamento(5);
             ImprimirLista();
-    }
-
+        }
+    getchar();
+    getchar();
+    MenuPricipal();
+    return;
 }
 
 int redirecionamento(int Seg){
     int i;
-
+    i = 0;
     for(i = Seg; i > 0;i--){
         printf("Você sera redirecionado em %d \r",i);
         Sleep(1000);
     }
+    return;
 }
 
 int PerguntaNovoCarro(){
     int menu;
     system(limpar);
+    menu = 0;
 
     printf("Ok Carro Cadastrado!\nGostaria de Cadastrar outro Carro ? (1 - Sim/ 2 - Não)");
     scanf("%d",&menu);
@@ -150,8 +262,8 @@ int PerguntaNovoCarro(){
             printf("Não Jovem!!!!!\nÉ 1 ou 2\n");
             redirecionamento(5);
             PerguntaNovoCarro();
-
     }
+    return;
 
 }
 
