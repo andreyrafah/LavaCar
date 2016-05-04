@@ -27,6 +27,7 @@ struct DadosCarros {
 };
 
 struct DadosCarros Carros[50];
+struct DadosCarros aux;
 int index;
 
 void MenuPricipal(){
@@ -80,7 +81,22 @@ void CadastrarCarro (){
     PerguntaTipoLavagem();
 
     PerguntaAspirador();
-    //>>>>>>>Aqui deve Pegar os Tipos de Serviço e definir a prioridade
+    if(Carros[index].tipo == 3){
+        PerguntaAspirador();
+    }
+
+    VlrParaIndex = index;
+    if(index > 0){
+
+        while(Carros[VlrParaIndex].prioridade < Carros[VlrParaIndex - 1].prioridade && VlrParaIndex > 0){
+            aux = Carros[VlrParaIndex - 1];
+            Carros[VlrParaIndex-1] = Carros[VlrParaIndex];
+            Carros[VlrParaIndex] = aux;
+            VlrParaIndex--;
+
+        }
+    }
+
     index++;
     PerguntaNovoCarro();
     return;
@@ -92,17 +108,21 @@ void PerguntaTipoVeiculo(){
     fflush(stdin);
     scanf("%d",&vlr);
     switch (vlr){
-    case 1:
+    case 1://Hatch
         Carros[index].tipo = 1;
+        Carros[index].prioridade = Carros[index].prioridade + -1;
     break;
-    case 2:
+    case 2://Sedan
         Carros[index].tipo = 2;
+        Carros[index].prioridade = Carros[index].prioridade + -2;
     break;
-    case 3:
+    case 3://Moto
         Carros[index].tipo = 3;
+        Carros[index].prioridade = Carros[index].prioridade + 1;
     break;
-    case 4:
+    case 4://Van
         Carros[index].tipo = 4;
+        Carros[index].prioridade = Carros[index].prioridade + -4;
     break;
     default:
             system(limpar);
@@ -119,10 +139,11 @@ void PerguntaAspirador(){
     fflush(stdin);
     scanf("%d",&vlr);
     switch (vlr){
-    case 1:
+    case 1://Sim
         Carros[index].aspirador = 1;
+        Carros[index].prioridade = Carros[index].prioridade + -1;
     break;
-    case 2:
+    case 2://Não
         Carros[index].aspirador = 2;
     break;
     default:
@@ -140,11 +161,13 @@ void PerguntaTipoLavagem(){
     fflush(stdin);
     scanf("%d",&vlr);
     switch (vlr){
-    case 1:
+    case 1://COMPLETA
         Carros[index].tipoLavagem = 1;
+        Carros[index].prioridade = Carros[index].prioridade + -2;
     break;
-    case 2:
+    case 2://Ecologica
         Carros[index].tipoLavagem = 2;
+        Carros[index].prioridade = Carros[index].prioridade + 1;
     break;
     default:
             system(limpar);
