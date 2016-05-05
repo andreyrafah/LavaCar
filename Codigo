@@ -61,6 +61,7 @@ void MenuPricipal(){
 
 void CadastrarCarro (){
     system(limpar);
+    int VlrParaIndex;
 
     Carros[index].prioridade = 0;
 
@@ -80,9 +81,10 @@ void CadastrarCarro (){
 
     PerguntaTipoLavagem();
 
-    PerguntaAspirador();
-    if(Carros[index].tipo == 3){
+    if(Carros[index].tipo != 3){
         PerguntaAspirador();
+    }else{
+      Carros[index].aspirador = 2;
     }
 
     VlrParaIndex = index;
@@ -272,7 +274,7 @@ void redirecionamento(int Seg){
         printf("Você sera redirecionado em %d",i);
 	//Sleep(1000);
         usleep(1000*1000);
-	printf("\r");
+	      printf("\n");
     }
     return;
 }
